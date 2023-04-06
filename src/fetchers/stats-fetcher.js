@@ -16,7 +16,7 @@ dotenv.config();
 
 // GraphQL queries.
 const GRAPHQL_REPOS_FIELD = `
-  repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}, after: $after) {
+  repositories(first: 100, ownerAffiliations: [OWNER, ORGANIZATION_MEMBER, COLLABORATOR], orderBy: {direction: DESC, field: STARGAZERS}, after: $after) {
     totalCount
     nodes {
       name
@@ -179,8 +179,8 @@ const totalCommitsFetcher = async (username) => {
  */
 const fetchStats = async (
   username,
-  count_private = false,
-  include_all_commits = false,
+  count_private = true,
+  include_all_commits = true,
   exclude_repo = [],
 ) => {
   if (!username) throw new MissingParamError(["username"]);
